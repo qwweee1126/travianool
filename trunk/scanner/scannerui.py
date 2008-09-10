@@ -9,25 +9,14 @@ sys.path.append(os.path.normpath(os.getcwd()+'/..'))
 import scanner
 from common.TravianConfig import TravianConfig
 from common.TravianClient import TravianClient
+from common.uicomp import LabelEntry
 
 ENTRY_WIDTH = 15
 SERVERS = ['scn1', 'speed', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9']
-class LabelEntry(Frame):
-    """Construct a label entry frame"""
-    def __init__(self, master, label, entryValue=''):
-        Frame.__init__(self, master)
-        Label(self, text=label).pack(side=LEFT)
-        self.entry = Entry(self, width=ENTRY_WIDTH)
-        if entryValue:
-            self.entry.insert(END, entryValue)
-        self.entry.pack(side=LEFT)
-        self.pack()
-    def getValue(self):
-        return self.entry.get()
 
 class ScannerWindow(Tk):
     def __init__(self):
-        Tk.__init__(self);
+        Tk.__init__(self)
         self.serverField = LabelEntry(self, u'服务器', 'scn1.travian.cn')
         self.userField = LabelEntry(self, u'用户名', 'testool')
         self.passwordField = LabelEntry(self, u'密   码', '111111')
