@@ -2,11 +2,11 @@
 import getopt
 
 class TravianConfig:
-    def __init__(self):
+    def __init__(self, username='用户名', password='密码'):
         #Some default settings
         self.ServerName = 'scn1.travian.cn'
-        self.UserName = '用户名'
-        self.PassWord = '密码'
+        self.UserName = username
+        self.PassWord = password
         self.ReLogin = False
 
         self.ThreadNum = 32

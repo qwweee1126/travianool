@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-import os.path, logging, re, time
+import os.path, logging, re, time, sys
 import urllib, urllib2, cookielib
 
 class TravianClient(object):
@@ -22,12 +22,19 @@ class TravianClient(object):
 		self.config = config
 		
 		#logging config
+		if not os.path.exists('log'):
+			os.mkdir('log')
 		logging.basicConfig(level=logging.DEBUG,
                     format='%(message)s',
                     filename='log/travian-client.log',
                     filemode='w')
 		
 	def login(self):
+		if not self.cookieExpire() and not self.config.ReLogin:
+			print 'Coockie not expire or not relogin, dont need relogin'
+			return True
+		print 'login.....'
+		
 		'''Retriving the cookie and save in COOKIEFILE.'''
 		logging.info('start login...............')
 		
@@ -90,15 +97,19 @@ class TravianClient(object):
 			if strHtml.find('login') > 0 and strHtml.find('用户名:') > 0 and strHtml.find('密码:') > 0 :
 				return False
 			
-			print 'These are the cookies we have received so far :'
-			for index, cookie in enumerate(self.cj):
-				print index, '  :  ', cookie        
+#			for index, cookie in enumerate(self.cj):
+#				print index, '  :  ', cookie
 			self.cj.save(self.COOKIEFILE)                     # save the cookies again
 		return True
 	
 	def cookieExpire(self):
+		if not os.path.exists(self.COOKIEFILE):
+			print 'cookie file not exist'
+			return True
 		for cookie in self.cj:
 			if cookie.is_expired():return True
+			
+		return False
 		
 	def getKarteZHtml(self,gridID):
 		theurl = 'http://%s/karte.php?z=%s'%(self.config.ServerName, gridID)
@@ -134,6 +145,20 @@ class TravianClient(object):
 					logging.info('Here we got web page ' + theurl)
 					logging.info(strHtml)
 		return strHtml
+	
+	def doPost(self, theurl, params):
+		self.HTTP_HANDLER._debuglevel = 0
+		try:
+			# create a request object
+			req = urllib2.Request(theurl, urllib.urlencode(params), self.txheaders)
+			
+			# and open it to return a handle on the url
+			handle = urllib2.urlopen(req)
+#			handle.read()
+		except IOError, e:
+			print e
+			sys.exit()
+	
 	
 def save(content, fname):
 	fsock = open(fname, 'w')
