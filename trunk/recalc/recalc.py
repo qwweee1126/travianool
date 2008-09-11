@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from Tkinter import *
 from tkMessageBox import showerror
-import os.path, time, random, datetime, re
+import os.path, time, datetime, re
 
 sys.path.append(os.path.normpath(os.getcwd()+'/..'))
 
@@ -30,7 +30,8 @@ class MyFrame(Frame):
 
 def makeWidgets(win):
     def __login():
-        config = TravianConfig(userEnt.get(), passEnt.get())
+        #注意:config.UserName保存的是str类型的字符, 所以从Entry.get()过来的unicode需要encode
+        config = TravianConfig(userEnt.get().encode('cp936'), passEnt.get().encode('cp936'))
         config.ReLogin = True
         
         tclient = TravianClient(config)
@@ -62,7 +63,7 @@ def makeWidgets(win):
     Label(loginFrame, text='密码').pack(side=LEFT)
     passEnt = Entry(loginFrame, width=10)
     passEnt.pack(side=LEFT)
-    Button(loginFrame, text='取得数据', command=__login).pack(side=LEFT)
+    Button(loginFrame, text='取得资源数据', command=__login).pack(side=LEFT)
     loginFrame.pack()
     ##########################################
     
@@ -91,13 +92,12 @@ def makeWidgets(win):
                 return
             
             r = report(res, speed, req[i-1])
-            if not r:
-                reports.append(u'%s:资源足够'%resourceLabels[i])
+            if len(r)==1:
+                reports.append(u'%s:资源足够. 盈余:%s'%(resourceLabels[i], r[0]))
             else:
-                reports.append(u'%s:缺少%4s, 需要%20s , 至%20s'%(resourceLabels[i], r[0], r[1], r[2]))
+                reports.append(u'%s:缺少%4s, 需要%15s , 至%12s'%(resourceLabels[i], r[0], r[1], r[2]))
             
         reportField.delete(1.0, END)
-        print reports
         reportField.insert(END, '\n'.join(reports))
         
     repBtn = Button(win, text=u'计算', command=getReport)
@@ -107,7 +107,7 @@ def report(resource, speed, require):
     """Return None if meet requirement, or (gap, timedelta, when)."""
     
     if resource >= require:
-        return None
+        return [resource - require]
     else:
         gap = require - resource
         seconds = int(float(gap)/speed*3600)     #in seconds

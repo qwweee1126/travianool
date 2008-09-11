@@ -103,7 +103,7 @@ class KarteDThread(threading.Thread):
           
         if html.find('资源分配') > 0:  #farm
             #farm
-            Info = ['','','','','[%s:%s]'%(tempx,tempy), '%f'%dest]
+            Info = ['','','','','[%s:%s]:%s'%(tempx,tempy,gridID), '%f'%dest]
             for idx, matObj in enumerate(re.findall(r'<td class="s7 b">(\d+)</td>', html)):
                 Info[idx] = matObj
             self.scaner.FarmWriter.write(",".join(Info) + '\n')
@@ -134,7 +134,7 @@ class KarteDThread(threading.Thread):
             residen = matObj.group(1)
             
             #写入, (u'村庄,玩家,种族,联盟,居民,x,y\n'.encode('cp936'))
-            self.scaner.VillageWriter.write(",".join([village, owner, type, alliance, residen, '[%s:%s]'%(tempx,tempy), '%f'%dest]) + '\n')
+            self.scaner.VillageWriter.write(",".join([village, owner, type, alliance, residen, '[%s:%s]:%s'%(tempx,tempy,gridID), '%f'%dest]) + '\n')
         elif html.find('军队') > 0:   #Oasis
             #oasis
             reresult = re.search(r'<img src="img/un/m/w(?P<id>\d+).jpg" id="resfeld">', html)
@@ -142,7 +142,7 @@ class KarteDThread(threading.Thread):
                 strOasisType = reresult.group('id')
             else:
                 strOasisType = ''
-            Info = ['','','','','','','','','','','',strOasisType,'[%s:%s]'%(tempx,tempy), '%f'%dest]
+            Info = ['','','','','','','','','','','',strOasisType,'[%s:%s]:%s'%(tempx,tempy,gridID), '%f'%dest]
             
             #animal amount
             animals = ['老鼠', '蜘蛛', '野猪', '蛇', '蝙蝠', '狼', '熊', '鳄鱼', '老虎', '大象']
@@ -175,9 +175,9 @@ class Scaner(object):
         self.FarmWriter = ScanWriter('result' + os.path.sep + dt.strftime('%Y%m%d') + 'Farm.csv')
         self.OasisWriter = ScanWriter('result' + os.path.sep + dt.strftime('%Y%m%d') + 'Oasis.csv')
         
-        self.VillageWriter.write(u'村庄,玩家,种族,联盟,居民,(x:y),距离\n'.encode('cp936'))   #保证可以在excel中读取中文。
-        self.FarmWriter.write(u'伐木场,泥坑,铁矿场,农场,(x:y),距离\n'.encode('cp936'))
-        self.OasisWriter.write(u'老鼠,蜘蛛,野猪,蛇,蝙蝠,狼,熊,鳄鱼,老虎,大象,总数,绿洲类型,(x:y),距离\n'.encode('cp936'))
+        self.VillageWriter.write(u'村庄,玩家,种族,联盟,居民,(x:y):id,距离\n'.encode('cp936'))   #保证可以在excel中读取中文。
+        self.FarmWriter.write(u'伐木场,泥坑,铁矿场,农场,(x:y):id,距离\n'.encode('cp936'))
+        self.OasisWriter.write(u'老鼠,蜘蛛,野猪,蛇,蝙蝠,狼,熊,鳄鱼,老虎,大象,总数,绿洲类型,(x:y):id,距离\n'.encode('cp936'))
         
     def scan(self):
         print 'Starting threads ...'
