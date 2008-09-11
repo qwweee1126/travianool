@@ -37,8 +37,7 @@ class TravianConfig:
                     self.ServerName = a
                 if o in ("-u", "--user"):
 #                    self.UserName = a.decode('GB18030')     #decode
-                    self.UserName = a
-                    print "Username:", a
+                    self.UserName = a   #<type str>, 来自命令行
                 if o in ("-p", "--pass"):
                     self.PassWord = a
                 if o in ("-t", "--thread"):

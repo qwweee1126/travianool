@@ -8,21 +8,9 @@ sys.path.append(os.path.normpath(os.getcwd()+'/..'))
 
 from common.TravianConfig import TravianConfig
 from common.TravianClient import TravianClient
- 
-class MyThread(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-    
-    def run(self):
-        print 'i am tired'
-        time.sleep(5)
-        print 'get up now'
-        
-    
-def newthread():
-    print 'start new thread'
-    MyThread().start()
+import common.util as util
 
+#global
 STOP = False
 
 #The main window    
@@ -54,22 +42,26 @@ class AutoAttackWindow(Tk):
         self.idEnt.pack(side=LEFT)
         
         #c: 出兵方式 - 2增援, 3攻击:普通/侦察, 4攻击:抢夺
-        Label(f2, text=u'出兵方式').pack(side=LEFT)
+        Label(f2, text='出兵类型').pack(side=LEFT)
         self.cEnt = Entry(f2, width=5)
         self.cEnt.insert(END, 4)
         self.cEnt.pack(side=LEFT)
+        f2.pack()
         
         #kid: 村庄id
-        Label(f2, text=u'村庄id').pack(side=LEFT)
-        self.kidEnt = Entry(f2, width=7)
+        f2 = Frame(self)
+        Label(f2, text=u'村  庄  id      ').pack(side=LEFT)
+        self.kidEnt = Entry(f2, width=30)
         self.kidEnt.pack(side=LEFT)
+        f2.pack()
 
         #
+        f2 = Frame(self)
         Label(f2, text=u'单程时间(秒)').pack(side=LEFT)
-        self.timeEnt = Entry(f2, width=8)
+        self.timeEnt = Entry(f2, width=30)
         self.timeEnt.pack(side=LEFT)
-        
         f2.pack()
+        
         
         #兵力
         self.armyEnts = []
@@ -105,7 +97,7 @@ class AutoAttackWindow(Tk):
     
     #登陆
     def login(self):
-        self.config = TravianConfig(self.userEnt.get(), self.passEnt.get())
+        self.config = TravianConfig(self.userEnt.get().encode('cp936'), self.passEnt.get())
         self.config.ReLogin = True
         
         self.tclient = TravianClient(self.config)
@@ -123,10 +115,9 @@ class AutoAttackWindow(Tk):
         try:
             params = {}
             params['id'] = int(self.idEnt.get())
-            params['a'] = random.randint(1, 60000)
             params['c'] = int(self.cEnt.get())
-            params['kid'] = int(self.kidEnt.get())
-            time = int(self.timeEnt.get())
+            kids = [int(k) for k in self.kidEnt.get().split()]      #村庄id可以多个, 用空格分开
+            times = [int(t) for t in self.timeEnt.get().split()]    #停顿秒数对应到村庄的时间，空格分开
             for i in range(1, 11):
                 params['t%s'%i] = int(self.armyEnts[i-1].get())
             params['t11'] = 0
@@ -134,22 +125,30 @@ class AutoAttackWindow(Tk):
             showerror('数据验证错误', '请确认您输入的数据正确')
             return
         
+        if len(kids) != len(times):
+            showerror('村庄数必须和时间数一致', '村庄数必须和时间数一致')
+            return
+        
         #开线程提交数据
         global STOP
         STOP = False
-        t = AutoThread(self.tclient, params, time*2 + 60)
-        t.start()
+        for i in range(len(kids)):
+            name = u'TD-%s'%kids[i]
+            t = AutoThread(name, self.tclient, params.copy(), kids[i], times[i]*2 + 60) #需要用params.copy(), 一个线程一份参数
+            t.start()
         
     def stop(self):
         global STOP
         STOP = True
+        sys.exit(0)     #退出所有线程
         
 
 class AutoThread(threading.Thread):
-    def __init__(self, tclient, params, sleepSec):
-        threading.Thread.__init__(self)
+    def __init__(self, name, tclient, params, kid, sleepSec):
+        threading.Thread.__init__(self, name=name)
         self.tclient = tclient
         self.params = params
+        self.params['kid'] = kid
         self.sleepSec = sleepSec
         self.URL = 'http://%s/a2b.php'%self.tclient.config.ServerName
         
@@ -157,16 +156,16 @@ class AutoThread(threading.Thread):
         while not STOP:
             #can login?
             if not self.tclient.login():
+                util.error(u'你没有登陆')
                 break
-            print 'has loginned'
             
+            #params 在多线程中共享
+            self.params['a'] = random.randint(1, 60000)     #某个随机数
             #post
-            print 'job dont and sleep :', threading.currentThread()
             self.tclient.doPost(self.URL, self.params)
+            util.info(u'%s 完成出兵%s任务, 等待%s秒开始下一轮。'%(self.getName(), self.params['kid'], self.sleepSec))
             time.sleep(self.sleepSec)
-            print 'thread wake up'
-        print 'all work done'
-
+        util.info(u'所有任务完成, 退出.')
         
 if __name__ == '__main__':
     win = AutoAttackWindow()

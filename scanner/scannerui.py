@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #include parent path in sys.path
-import sys, os.path, threading
+import os.path, threading
 from Tkinter import *
 from tkMessageBox import *
 
@@ -44,6 +44,7 @@ class ScannerWindow(Tk):
         co1 = self.co1Field.getValue()
         co2 = self.co2Field.getValue()
         username = self.userField.getValue()
+#        print username, type(username)
         password = self.passwordField.getValue()
         home = self.homeField.getValue()
         
@@ -59,7 +60,7 @@ class ScannerWindow(Tk):
             showerror(x.title, x.message)
             return False
             
-        #Config
+        #Config, 传过去的字符串是<type str>
         self.config = TravianConfig()
         argv = 'rubbish -s %s -u %s -p %s -m %s -l %s %s'%(server, username.encode('cp936'), password, home, co1, co2)
         return self.config.getConfig(argv.split())
