@@ -120,7 +120,7 @@ class AutoAttackWindow(Tk):
             times = [int(t) for t in self.timeEnt.get().split()]    #停顿秒数对应到村庄的时间，空格分开
             for i in range(1, 11):
                 params['t%s'%i] = int(self.armyEnts[i-1].get())
-            params['t11'] = 0
+            params['t11'] = 1
         except:
             showerror('数据验证错误', '请确认您输入的数据正确')
             return
