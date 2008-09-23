@@ -43,7 +43,7 @@ def makeWidgets(win):
         theurl = 'http://%s/dorf1.php'%(config.ServerName)
         html = tclient.getHtmlByURL(theurl)
         for i in range(4, 0, -1):
-            matObj = re.findall('<td id=l%s title=(\d+)>(\d+)/\d+</td>'%i, html)
+            matObj = re.findall('<td id=l%s title=(\d+)>(\d+)/(\d+)</td>'%i, html)
             if not matObj:
                 showerror('取数据出错', '取数据出错')
                 return
@@ -53,7 +53,9 @@ def makeWidgets(win):
             resourceFrame.entries[4-i].insert(END, matObj[0][1])
             speedFrame.entries[4-i].delete(0, END)
             speedFrame.entries[4-i].insert(END, matObj[0][0])
-        #
+            warehouseFrame.entries[4-i].delete(0, END)
+            warehouseFrame.entries[4-i].insert(END, matObj[0][2])
+    ###################################################################################
         
     #登陆
     loginFrame = Frame(win)
@@ -67,8 +69,9 @@ def makeWidgets(win):
     loginFrame.pack()
     ##########################################
     
-    resourceFrame = MyFrame(win, u'资   源')
+    resourceFrame = MyFrame(win, u'资    源')
     speedFrame = MyFrame(win, u'生产力')
+    warehouseFrame = MyFrame(win, u'仓    库')
     
     reqFrame = Frame(win)
     Label(reqFrame, text='需    求').pack(side=LEFT)
@@ -99,9 +102,25 @@ def makeWidgets(win):
             
         reportField.delete(1.0, END)
         reportField.insert(END, '\n'.join(reports))
+    
+    def explode():
+        reports = []
+        for i in range(1, 5):
+            try:
+                res = int(resourceFrame.entries[i-1].get())
+                speed = int(speedFrame.entries[i-1].get())
+                ware = int(warehouseFrame.entries[i-1].get())
+            except:
+                showerror('数据错误', '请确认数据格式正确')
+                return
+            seconds = int((ware-res)/float(speed)*3600)
+            reports.append(u'还有 %s 秒爆仓'%datetime.timedelta(seconds=seconds))
+        reportField.delete(1.0, END)
+        reportField.insert(END, '\n'.join(reports))
         
-    repBtn = Button(win, text=u'计算', command=getReport)
-    repBtn.pack()
+        
+    Button(win, text=u'何时满足', command=getReport).pack()
+    Button(win, text=u'何时爆仓', command=explode).pack()
 
 def report(resource, speed, require):
     """Return None if meet requirement, or (gap, timedelta, when)."""
