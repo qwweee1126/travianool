@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #include parent path in sys.path
-import os.path, threading, time, random
+import os.path, threading, time, random, datetime
 from Tkinter import *
 from tkMessageBox import *
 
@@ -8,6 +8,7 @@ sys.path.append(os.path.normpath(os.getcwd()+'/..'))
 
 from common.TravianConfig import TravianConfig
 from common.TravianClient import TravianClient
+from datetime import datetime, timedelta
 import common.util as util
 
 #global
@@ -22,12 +23,10 @@ class AutoAttackWindow(Tk):
         f1 = Frame(self)
         Label(f1, text=u'用户名').pack(side=LEFT)
         self.userEnt = Entry(f1, width=15)
-        self.userEnt.insert(END, u'testool')
         self.userEnt.pack(side=LEFT)
         
         Label(f1, text=u'密码').pack(side=LEFT)
         self.passEnt = Entry(f1, width=15)
-        self.passEnt.insert(END, '111111')
         self.passEnt.pack(side=LEFT)
         
         f1.pack()
@@ -46,6 +45,13 @@ class AutoAttackWindow(Tk):
         self.cEnt = Entry(f2, width=5)
         self.cEnt.insert(END, 4)
         self.cEnt.pack(side=LEFT)
+        f2.pack()
+
+        #等待时间
+        Label(f2, text='等待(秒)').pack(side=LEFT)
+        self.waitEnt = Entry(f2, width=5)
+        self.waitEnt.insert(END, 10)
+        self.waitEnt.pack(side=LEFT)
         f2.pack()
         
         #kid: 村庄id
@@ -121,6 +127,7 @@ class AutoAttackWindow(Tk):
             for i in range(1, 11):
                 params['t%s'%i] = int(self.armyEnts[i-1].get())
             params['t11'] = 1
+            wait = int(self.waitEnt.get())    #停顿秒数对应到村庄的时间，空格分开
         except:
             showerror('数据验证错误', '请确认您输入的数据正确')
             return
@@ -134,7 +141,7 @@ class AutoAttackWindow(Tk):
         STOP = False
         for i in range(len(kids)):
             name = u'TD-%s'%kids[i]
-            t = AutoThread(name, self.tclient, params.copy(), kids[i], times[i]*2 + 60) #需要用params.copy(), 一个线程一份参数
+            t = AutoThread(name, self.tclient, params.copy(), kids[i], times[i]*2 + 60, wait) #需要用params.copy(), 一个线程一份参数
             t.start()
         
     def stop(self):
@@ -144,16 +151,22 @@ class AutoAttackWindow(Tk):
         
 
 class AutoThread(threading.Thread):
-    def __init__(self, name, tclient, params, kid, sleepSec):
+    def __init__(self, name, tclient, params, kid, sleepSec, wait=10):
         threading.Thread.__init__(self, name=name)
         self.tclient = tclient
         self.params = params
         self.params['kid'] = kid
         self.sleepSec = sleepSec
         self.URL = 'http://%s/a2b.php'%self.tclient.config.ServerName
+        self.wait = wait
         
     def run(self):
         while not STOP:
+            #等待时间
+            now = datetime.now()
+            d = timedelta(seconds=self.wait)
+            util.info(u'现在时间%s 等待%s, 在%s出兵'%(now, d, now+d)) 
+            time.sleep(self.wait)
             #can login?
             if not self.tclient.login():
                 util.error(u'你没有登陆')
