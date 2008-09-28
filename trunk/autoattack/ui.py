@@ -13,6 +13,7 @@ import common.util as util
 
 #global
 STOP = False
+THREADS = []
 
 #The main window    
 class AutoAttackWindow(Tk):    
@@ -86,7 +87,7 @@ class AutoAttackWindow(Tk):
         f3.pack()
 
         f4 = Frame(self)
-        for i in range(6, 11):
+        for i in range(6, 12):
             photo = PhotoImage(file="img/%s.gif" % i)
             label = Label(f4, image=photo)
             label.photo = photo
@@ -124,9 +125,8 @@ class AutoAttackWindow(Tk):
             params['c'] = int(self.cEnt.get())
             kids = [int(k) for k in self.kidEnt.get().split()]      #村庄id可以多个, 用空格分开
             times = [int(t) for t in self.timeEnt.get().split()]    #停顿秒数对应到村庄的时间，空格分开
-            for i in range(1, 11):
+            for i in range(1, 12):
                 params['t%s'%i] = int(self.armyEnts[i-1].get())
-            params['t11'] = 1
             wait = int(self.waitEnt.get())    #停顿秒数对应到村庄的时间，空格分开
         except:
             showerror('数据验证错误', '请确认您输入的数据正确')
@@ -141,12 +141,15 @@ class AutoAttackWindow(Tk):
         STOP = False
         for i in range(len(kids)):
             name = u'TD-%s'%kids[i]
-            t = AutoThread(name, self.tclient, params.copy(), kids[i], times[i]*2 + 60, wait) #需要用params.copy(), 一个线程一份参数
-            t.start()
+            thread = AutoThread(name, self.tclient, params.copy(), kids[i], times[i]*2 + 60, wait) #需要用params.copy(), 一个线程一份参数
+            THREADS.append(thread)
+            thread.start()
         
     def stop(self):
         global STOP
         STOP = True
+#        for thread in THREADS:
+#            thread
         sys.exit(0)     #退出所有线程
         
 
@@ -166,7 +169,7 @@ class AutoThread(threading.Thread):
             now = datetime.now()
             d = timedelta(seconds=self.wait)
             util.info(u'现在时间%s 等待%s, 在%s出兵'%(now, d, now+d)) 
-            time.sleep(self.wait)
+            time.sleep(self.wait + random.randint(1, 20))   #修正1-20秒
             #can login?
             if not self.tclient.login():
                 util.error(u'你没有登陆')

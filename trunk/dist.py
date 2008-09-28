@@ -60,4 +60,4 @@ if __name__ == '__main__':
     #####distribute
 #    distAutoAttack("0.1")
 #    distScanner(0.1)
-    distRecalc(0.2)
+#    distRecalc(0.2)
