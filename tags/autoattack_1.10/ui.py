@@ -17,6 +17,7 @@ THREADS = []
 
 #The main window    
 class AutoAttackWindow(Tk):    
+    """从autolist.txt读取攻击列表"""
     def __init__(self):
         Tk.__init__(self)
         
