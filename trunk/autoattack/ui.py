@@ -24,6 +24,7 @@ class AutoAttackWindow(Tk):
         f1 = Frame(self)
         Label(f1, text=u'用户名').pack(side=LEFT)
         self.userEnt = Entry(f1, width=15)
+        self.userEnt.insert(END, u'灶君')
         self.userEnt.pack(side=LEFT)
         
         Label(f1, text=u'密码').pack(side=LEFT)
@@ -51,7 +52,7 @@ class AutoAttackWindow(Tk):
         #等待时间
         Label(f2, text='等待(秒)').pack(side=LEFT)
         self.waitEnt = Entry(f2, width=5)
-        self.waitEnt.insert(END, 10)
+        self.waitEnt.insert(END, 2)
         self.waitEnt.pack(side=LEFT)
         f2.pack()
         
