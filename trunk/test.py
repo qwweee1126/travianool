@@ -1,4 +1,5 @@
 import threading, time
+from datetime import datetime
 
 class MyThread(threading.Thread):
     def __init__(self):
@@ -10,7 +11,9 @@ class MyThread(threading.Thread):
         time.sleep(10)
     
 if __name__ == '__main__':
-    t = MyThread()
-    t.start()
-    print 'main'
-    print threading.activeCount()
+#    t = MyThread()
+#    t.start()
+#    print 'main'
+#    print threading.activeCount()
+    now = datetime.now()
+    print str(now)[:19]
