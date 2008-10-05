@@ -1,0 +1,27 @@
+#自动攻击列表
+#t1: 古罗马步兵; 
+#t4: 使节骑士
+#t5: 帝国骑士
+#出兵类型: 4-掠夺
+#kid:村庄id 
+#sleep:单程(秒) 
+#wait:等待(秒) 
+#c:出兵类型, 4掠夺
+#times:次数 
+#spy:侦查类型
+#
+#####侦查, 因为只有1趟, 单程时间就不重要了##############
+kid=347268;sleep=23;wait=2;c=4;times=1;t4=1;spy=1		#bum的村庄-侦查
+kid=345666;sleep=23;wait=2;c=4;times=1;t4=1;spy=1		#龙之飞翼
+kid=347270;sleep=23;wait=2;c=4;times=1;t4=1;spy=1		#龍舌驕子的村庄
+################掠夺##############
+#kid=347268;sleep=23;wait=2;c=4;times=1;t5=3		        #bum的村庄
+#kid=345666;sleep=813;wait=2;c=4;times=2;t5=5		    #龙之飞翼
+#kid=347270;sleep=364;wait=2;c=4;times=1;t5=5	      	#龍舌驕子的村庄
+kid=340861;sleep=2314;wait=2;c=4;times=10;t5=8	      	#海豚湾
+kid=344859;sleep=2073;wait=2;c=4;times=10;t5=8	      	#飞13℃
+kid=343258;sleep=2182;wait=2;c=4;times=10;t5=8	      	#小飞机
+kid=354479;sleep=2073;wait=2;c=4;times=10;t5=8	      	#红胡子的村庄
+kid=342459;sleep=2073;wait=2;c=4;times=10;t5=8	      	#♂星空♂的村庄
+kid=348865;sleep=2073;wait=2;c=4;times=10;t5=8	      	#摩天轮[#0]
+kid=347263;sleep=1564;wait=2;c=4;times=10;t5=8	      	#轻舞飞扬
