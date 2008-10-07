@@ -27,7 +27,7 @@ class TravianClient(object):
 			os.mkdir('log')
 		
 	def login(self):
-		if not self.cookieExpire():   # and not self.config.ReLogin:
+		if not self.cookieExpire() and not self.config.ReLogin:
 			util.debug(u'不需重新登陆(Cookie未过期或ReLogin=False)')
 			return True
 		
