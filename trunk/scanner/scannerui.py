@@ -18,11 +18,11 @@ class ScannerWindow(Tk):
     def __init__(self):
         Tk.__init__(self)
         self.serverField = LabelEntry(self, u'服务器', 'scn1.travian.cn')
-        self.userField = LabelEntry(self, u'用户名', 'testool')
-        self.passwordField = LabelEntry(self, u'密   码', '111111')
-        self.co1Field = LabelEntry(self, u'坐标 1', '0:0')
-        self.co2Field = LabelEntry(self, u'坐标 2', '6:6')
-        self.homeField = LabelEntry(self, u'主村坐标', '1:1')
+        self.userField = LabelEntry(self, u'用户名', '灶君')
+        self.passwordField = LabelEntry(self, u'密   码')
+        self.co1Field = LabelEntry(self, u'坐标 1', '25:-44')
+        self.co2Field = LabelEntry(self, u'坐标 2', '45:-24')
+        self.homeField = LabelEntry(self, u'主村坐标', '35:-34')
         
         repBtn = Button(self, text=u'扫描', command=self.do)
         repBtn.pack()
