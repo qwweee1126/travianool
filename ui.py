@@ -85,7 +85,7 @@ def parseAttackList(fname=AUTOLIST):
             if key in ['sleep', 'times']:
                 value = int(value)
             if key == 'wait':
-                value = int(value)+idx*3
+                value = int(value)+idx*5    #延迟5秒
             
             params[key] = value          #村庄id
             
