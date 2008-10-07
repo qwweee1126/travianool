@@ -11,11 +11,11 @@
 #spy:侦查类型
 #
 #####侦查, 因为只有1趟, 单程时间就不重要了##############
-kid=347268;sleep=23;wait=2;c=4;times=1;t4=1;spy=1		#bum的村庄-侦查
 kid=345666;sleep=23;wait=2;c=4;times=1;t4=1;spy=1		#龙之飞翼
 kid=347270;sleep=23;wait=2;c=4;times=1;t4=1;spy=1		#龍舌驕子的村庄
+kid=350471;sleep=23;wait=2;c=4;times=1;t4=1;spy=1		#疯狂村
+kid=349674;sleep=23;wait=2;c=4;times=1;t4=1;spy=1		#大双会
 ################掠夺##############
-#kid=347268;sleep=23;wait=2;c=4;times=1;t5=3		    #bum的村庄
 #kid=345666;sleep=813;wait=2;c=4;times=2;t5=5		    #龙之飞翼
 #kid=347270;sleep=364;wait=2;c=4;times=1;t5=5	      	#龍舌驕子的村庄
 #kid=340861;sleep=2314;wait=2;c=4;times=10;t5=5	      	#海豚湾

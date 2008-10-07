@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from Tkinter import *
-from tkMessageBox import showerror
-import os.path, time, datetime, re
+from tkMessageBox import showerror, showinfo
+import os.path, time, datetime, re, operator
 
 sys.path.append(os.path.normpath(os.getcwd()+'/..'))
 
@@ -118,9 +118,14 @@ def makeWidgets(win):
         reportField.delete(1.0, END)
         reportField.insert(END, '\n'.join(reports))
         
+    def total():
+        t = reduce(operator.add, [int(s) for s in re.split(r'[ |]', reqEnt.get())])
+        reportField.delete(1.0, END)
+        reportField.insert(END, '总资源: %s'%t)
         
     Button(win, text=u'何时满足', command=getReport).pack()
     Button(win, text=u'何时爆仓', command=explode).pack()
+    Button(win, text=u'资源总计', command=total).pack()
 
 def report(resource, speed, require):
     """Return None if meet requirement, or (gap, timedelta, when)."""
@@ -130,7 +135,6 @@ def report(resource, speed, require):
     else:
         gap = require - resource
         seconds = int(float(gap)/speed*3600)     #in seconds
-        
         
         when = datetime.datetime(2008, 9, 1)            #datetime obj
         when = when.fromtimestamp(time.time() + seconds)    #datetime obj
