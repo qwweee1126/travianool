@@ -17,6 +17,10 @@ SERVERS = ['scn1', 'speed', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9'
 class ScannerWindow(Tk):
     def __init__(self):
         Tk.__init__(self)
+#21x21格
+#25:-44
+#45:-24
+#35:-34
         self.serverField = LabelEntry(self, u'服务器', 'scn1.travian.cn')
         self.userField = LabelEntry(self, u'用户名', '灶君')
         self.passwordField = LabelEntry(self, u'密   码')
