@@ -27,7 +27,7 @@ class TravianClient(object):
 			os.mkdir('log')
 		
 	def login(self):
-		if not self.cookieExpire() and not self.config.ReLogin:
+		if not self.cookieExpire():   # and not self.config.ReLogin:
 			util.debug(u'不需重新登陆(Cookie未过期或ReLogin=False)')
 			return True
 		
@@ -153,5 +153,5 @@ if __name__ == '__main__':
 	client = TravianClient(cfg.TravianConfig())
 	client.login()
 
-	w = client.getKarteZHtml(348070)
-	save(w, '348070.html')
+#	w = client.getKarteZHtml(348070)
+#	save(w, '348070.html')
