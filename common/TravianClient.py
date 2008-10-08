@@ -88,7 +88,7 @@ class TravianClient(object):
 #			for index, cookie in enumerate(self.cj):
 #				print index, '  :  ', cookie
 			self.cj.save(self.COOKIEFILE)                     # save the cookies again
-		util.info(u'登陆成功, Cookie已被保存。')
+		util.debug(u'登陆成功, Cookie已被保存。')
 		return True
 	
 	def cookieExpire(self):
