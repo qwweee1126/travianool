@@ -111,7 +111,8 @@ class AutoThread(threading.Thread):
         #等待时间
         now = datetime.now()
         d = timedelta(seconds=self.wait)
-        util.info(u'现在时间%s 等待%s, 在%s出兵'%(_format(now), d, _format(now+d)))
+        #util.info(u'现在时间%s 等待%s, 在%s出兵'%(_format(now), d, _format(now+d)))
+        util.info(u'现在时间%s 等待%s'%(_format(now), d))
         time.sleep(self.wait)
         
         for i in range(self.times):
