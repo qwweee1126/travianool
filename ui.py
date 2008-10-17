@@ -73,9 +73,8 @@ def parseAttackList(fname=AUTOLIST):
     attacks = []
     idx = 1
     for line in auto:
-        if line.startswith('#'):
+        if line.startswith('#') or line.isspace():
             continue
-        print line
         line = line[:line.index('#')].strip()   #kid=347270;sleep=364
         toks = line.split(';')
         params = {'id': 39}
