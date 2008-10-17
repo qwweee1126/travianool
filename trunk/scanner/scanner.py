@@ -171,9 +171,9 @@ class Scaner(object):
         
         #csv file
         dt = datetime.now()
-        self.VillageWriter = ScanWriter('result' + os.path.sep + dt.strftime('%Y%m%d') + 'Village.csv')
-        self.FarmWriter = ScanWriter('result' + os.path.sep + dt.strftime('%Y%m%d') + 'Farm.csv')
-        self.OasisWriter = ScanWriter('result' + os.path.sep + dt.strftime('%Y%m%d') + 'Oasis.csv')
+        self.VillageWriter = ScanWriter('result' + os.path.sep + dt.strftime('%Y%m%d_%H%M%S') + 'Village.csv')
+        self.FarmWriter = ScanWriter('result' + os.path.sep + dt.strftime('%Y%m%d_%H%M%S') + 'Farm.csv')
+        self.OasisWriter = ScanWriter('result' + os.path.sep + dt.strftime('%Y%m%d_%H%M%S') + 'Oasis.csv')
         
         self.VillageWriter.write(u'村庄,玩家,种族,联盟,居民,(x:y):id,距离\n'.encode('cp936'))   #保证可以在excel中读取中文。
         self.FarmWriter.write(u'伐木场,泥坑,铁矿场,农场,(x:y):id,距离\n'.encode('cp936'))
