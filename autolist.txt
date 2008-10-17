@@ -22,7 +22,6 @@ kid=344870;sleep=1455;wait=2;c=4;times=10;t5=8	      	#水立方
 kid=343258;sleep=2182;wait=2;c=4;times=10;t5=8	      	#小飞机
 kid=342469;sleep=2371;wait=2;c=4;times=10;t5=8	      	#轩辕帝国
 kid=355283;sleep=2533;wait=2;c=4;times=10;t5=8	      	#逍遥王骏哥
-kid=355274;sleep=2650;wait=2;c=4;times=10;t5=8	      	#魔域メ东方☆国度
-
-#####kid=342459;sleep=2073;wait=2;c=4;times=10;t5=8	      	#♂星空♂的村庄
+####kid=355274;sleep=2650;wait=2;c=4;times=10;t5=8	      	#魔域メ东方☆国度
+####kid=342459;sleep=2073;wait=2;c=4;times=10;t5=8	      	#♂星空♂的村庄
 ####kid=340066;sleep=2999;wait=2;c=4;times=10;t5=8	      	#中华人民共和国的村庄
