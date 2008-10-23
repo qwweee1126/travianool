@@ -16,7 +16,7 @@
 #kid=350471;sleep=23;wait=2;c=4;times=1;t4=1;spy=1		#疯狂村
 #kid=349674;sleep=23;wait=2;c=4;times=1;t4=1;spy=1		#大双会
 ################掠夺##############
-kid=350467;sleep=1730;wait=2;c=4;times=10;t5=8	      	#2542542
+##kid=350467;sleep=1730;wait=2;c=4;times=10;t5=8	      	#2542542
 kid=354479;sleep=2073;wait=2;c=4;times=10;t5=8	      	#红胡子的村庄
 kid=344870;sleep=1455;wait=2;c=4;times=10;t5=8	      	#水立方
 kid=343258;sleep=2182;wait=2;c=4;times=10;t5=8	      	#小飞机
